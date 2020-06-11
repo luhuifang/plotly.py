@@ -33,36 +33,36 @@ class PlotlyJSONEncoder(_json.JSONEncoder):
         else:
             return const
 
-    def encode(self, o):
-        """
-        Load and then dump the result using parse_constant kwarg
+    #def encode(self, o):
+    #    """
+    #    Load and then dump the result using parse_constant kwarg
 
-        Note that setting invalid separators will cause a failure at this step.
+    #    Note that setting invalid separators will cause a failure at this step.
 
-        """
+    #    """
 
-        # this will raise errors in a normal-expected way
-        encoded_o = super(PlotlyJSONEncoder, self).encode(o)
+    #    # this will raise errors in a normal-expected way
+    #    encoded_o = super(PlotlyJSONEncoder, self).encode(o)
 
-        # now:
-        #    1. `loads` to switch Infinity, -Infinity, NaN to None
-        #    2. `dumps` again so you get 'null' instead of extended JSON
-        try:
-            new_o = _json.loads(encoded_o, parse_constant=self.coerce_to_strict)
-        except ValueError:
+    #    # now:
+    #    #    1. `loads` to switch Infinity, -Infinity, NaN to None
+    #    #    2. `dumps` again so you get 'null' instead of extended JSON
+    #    try:
+    #        new_o = _json.loads(encoded_o, parse_constant=self.coerce_to_strict)
+    #    except ValueError:
 
-            # invalid separators will fail here. raise a helpful exception
-            raise ValueError(
-                "Encoding into strict JSON failed. Did you set the separators "
-                "valid JSON separators?"
-            )
-        else:
-            return _json.dumps(
-                new_o,
-                sort_keys=self.sort_keys,
-                indent=self.indent,
-                separators=(self.item_separator, self.key_separator),
-            )
+    #        # invalid separators will fail here. raise a helpful exception
+    #        raise ValueError(
+    #            "Encoding into strict JSON failed. Did you set the separators "
+    #            "valid JSON separators?"
+    #        )
+    #    else:
+    #        return _json.dumps(
+    #            new_o,
+    #            sort_keys=self.sort_keys,
+    #            indent=self.indent,
+    #            separators=(self.item_separator, self.key_separator),
+    #        )
 
     def default(self, obj):
         """
